@@ -1,4 +1,4 @@
-import { Actor, PlaywrightCrawler } from 'apify';
+import { Actor } from 'apify';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 await Actor.init();
@@ -20,9 +20,6 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
         await searchData(defPage, page, item);
     }
     async function searchData(def, amount, res) {
-        console.log(def)
-        console.log(amount)
-        console.log(res)
         for (let j = def; j < amount; j++) {
             let url = 'https://www.websiteclosers.com/businesses-for-sale/page/' + j + '/';
             let response = await axios.get(url, {
