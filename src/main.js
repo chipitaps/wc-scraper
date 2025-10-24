@@ -1,9 +1,10 @@
-import { Actor } from 'apify';
+import { Actor, PlaywrightCrawler } from 'apify';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 await Actor.init();
 const input = await Actor.getInput();
 const object = [];
+const crawler = new PlaywrightCrawler
 let { startUrl } = input;
 if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
     console.log('Thats not a valid URL')
@@ -14,9 +15,9 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
     let page;
     let item;
     if (type == "Max Items") {
-        page = Math.floor(max/12) + 2
-        item = (max > 12)? (max % 12) : max
-        await searchData(defPage, page, item)
+        page = Math.floor(max / 12) + 2
+        item = (max > 12) ? (max % 12) : max
+        await searchData(defPage, page, item);
     }
     async function searchData(def, amount, res) {
         console.log(def)
@@ -24,7 +25,11 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
         console.log(res)
         for (let j = def; j < amount; j++) {
             let url = 'https://www.websiteclosers.com/businesses-for-sale/page/' + j + '/';
-            let response = await axios.get(url);
+            let response = await axios.get(url, {
+                headers: {
+                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
+                },
+            });
             const $ = cheerio.load(response.data);
             $('div.post_item').each((i, element) => {
                 if (i == res && j == amount - 1) {
@@ -48,7 +53,7 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
                     console.log('Pagina', j, 'Link No: ', i, infoObject);
                     object.push(infoObject);
                 }
-                
+
             });
         }
         await Actor.pushData(object);
