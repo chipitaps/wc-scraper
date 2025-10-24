@@ -12,18 +12,18 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
     let pageNum;
     let item;
     if (type == "Max Items") {
-        pageNum = (max < 12) ? Math.floor(max / 12) + 2 : Math.floor(max / 12) + 1
-        item = (max >= 12) ? (max % 12) : max
+        pageNum = (max < 12) ? Math.floor(max / 12) + 2 : Math.floor(max / 12) + 1;
+        item = (max >= 12) ? (max % 12) : max;
     } else {
-        pageNum = max
-    }
+        pageNum = max;
+    };
     for (let i = defPage; i < (defPage + pageNum); i++) {
         if (i == 23) {
-            break
+            break;
         }
-        urls.push('https://www.websiteclosers.com/businesses-for-sale/page/' + i + '/')
+        urls.push('https://www.websiteclosers.com/businesses-for-sale/page/' + i + '/');;
     }
-    const requestList = await RequestList.open('urls', urls)
+    const requestList = await RequestList.open('urls', urls);
 
     const crawler = new PlaywrightCrawler({
         requestList,
@@ -32,7 +32,7 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
         requestHandler: async ({ page, request }) => {
             await page.waitForLoadState('networkidle');
             const html = await page.content();
-            const $ = cheerio.load(html)
+            const $ = cheerio.load(html);
             const object = [];
             $('div.post_item').each((i, element) => {
                 if (item != undefined) {
@@ -41,8 +41,8 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
                         return false;
                     }
                 }
-                let price = $(element).find('div.botoom.flex div div.asking_price strong')
-                let profit = $(element).find('div.botoom.flex div div.cash_flow strong')
+                let price = $(element).find('div.botoom.flex div div.asking_price strong');
+                let profit = $(element).find('div.botoom.flex div div.cash_flow strong');
                 const infoObject = {
                     link: $(element).find('a').prop('href'),
                     image: $(element).find('a').attr('data-bg'),
@@ -59,11 +59,11 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
                 console.log('Page No:', parseInt(request.url.match(/\d+/)[0]), 'Link No: ', i, infoObject);
                 object.push(infoObject);
             });
-            await Actor.pushData(object)
+            await Actor.pushData(object);
         },
 
         failedRequestHandler: async ({ request }) => {
-            return false
+            crawler.stop();
         }
 
     });
