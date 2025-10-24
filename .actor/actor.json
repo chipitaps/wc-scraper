@@ -38,11 +38,11 @@
                         "component": "table",
                         "properties": {
                             "image": {
-                                "label": "Product image",
+                                "label": "Reference image",
                                 "format": "image"
                             },
                             "title": {
-                                "label": "Name",
+                                "label": "Business Name",
                                 "format": "text"
                             },
 							"desc": {
@@ -50,27 +50,35 @@
 								"format": "text"
 							},
                             "rawprice": {
+								"label": "Asking Price",
                                 "format": "text"
                             },
 							"numprice": {
+								"label": "Numeric Asking Price",
 								"format": "number"
 							},
                             "rawprofit": {
+								"label": "Cash Flow",
                                 "format": "text"
                             },
 							"numprofit": {
+								"label": "Numeric Cash Flow",
 								"format" : "number"
 							},
                             "available": {
+								"label": "Available",
                                 "format": "boolean"
                             },
                             "broker": {
+								"label": "Broker Name",
                                 "format": "text"
                             },
                             "timestamp": {
+								"label": "Scraped TimeStamp",
                                 "format": "text"
                             },
 							"link": {
+								"label": "Offer Link",
 								"format": "link"
 							}
                         }
