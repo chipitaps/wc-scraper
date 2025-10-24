@@ -1,37 +1,46 @@
 import { Actor } from 'apify';
-import axios from 'axios';
+import { RequestList, PlaywrightCrawler } from 'crawlee'
 import * as cheerio from 'cheerio';
 await Actor.init();
 const input = await Actor.getInput();
 const object = [];
-
-let { startUrl } = input;
+const urls = [];
+const { startUrl, type, max } = input;
 if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
-    console.log('Thats not a valid URL')
+    console.log('Thats not a valid URL');
 } else {
     let defPage = (startUrl.match(/\d+/) === null || parseInt(startUrl.match(/\d+/)) === 0) ? 1 : parseInt(startUrl.match(/\d+/)[0]);
-    let { type } = input;
-    let { max } = input;
-    let page;
+    let pageNum;
     let item;
     if (type == "Max Items") {
-        page = Math.floor(max / 12) + 2
-        item = (max > 12) ? (max % 12) : max
-        await searchData(defPage, page, item);
+        pageNum = (max < 12)? Math.floor(max / 12) + 2 : Math.floor(max / 12) + 1
+        item = (max >= 12) ? (max % 12) : max
+    } else {
+        pageNum = max
     }
-    async function searchData(def, amount, res) {
-        for (let j = def; j < amount; j++) {
-            let url = 'https://www.websiteclosers.com/businesses-for-sale/page/' + j + '/';
-            let response = await axios.get(url, {
-                headers: {
-                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
-                },
-            });
-            const $ = cheerio.load(response.data);
-            $('div.post_item').each((i, element) => {
-                if (i == res && j == amount - 1) {
-                    return false
-                } else {
+    for (let i = defPage; i < (defPage + pageNum); i++) {
+        if (i == 23) {
+            break
+        }
+        urls.push('https://www.websiteclosers.com/businesses-for-sale/page/' + i + '/')
+    }
+    const requestList  = await RequestList.open('urls', urls)
+
+const crawler = new PlaywrightCrawler({
+    requestList,
+    maxConcurrency: 1,
+    maxRequestRetries: 3,
+    requestHandler: async ({page, request}) => {
+        await page.waitForLoadState('networkidle');
+        const html = await page.content();
+        const $ = cheerio.load(html)
+        $('div.post_item').each((i, element) => {
+            if (item != undefined) {
+                if (parseInt(request.url.match(/\d+/)[0]) == (defPage + pageNum) - 1 && i == item) {
+                    crawler.stop();
+                    return false;
+                }
+            }
                     let price = $(element).find('div.botoom.flex div div.asking_price strong')
                     let profit = $(element).find('div.botoom.flex div div.cash_flow strong')
                     const infoObject = {
@@ -47,14 +56,18 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
                         broker: $(element).find('div.post_content div.the_content').text().trim().split(' ')[0],
                         timestamp: new Date(Date.now())
                     };
-                    console.log('Pagina', j, 'Link No: ', i, infoObject);
+                    console.log('Page No:', parseInt(request.url.match(/\d+/)[0]) ,'Link No: ', i, infoObject);
                     object.push(infoObject);
-                }
-
             });
-        }
-        await Actor.pushData(object);
+            await Actor.pushData(object)
+    },
+
+    failedRequestHandler: async ({request}) => {
+        return false
     }
+
+});
+await crawler.run();
 }
 
 await Actor.exit();
