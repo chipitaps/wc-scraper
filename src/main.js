@@ -8,16 +8,16 @@ const { startUrl, type, max } = input;
 if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
     console.log('Thats not a valid URL');
 } else {
-    let defPage = (startUrl.match(/\d+/) === null || parseInt(startUrl.match(/\d+/)) === 0) ? 1 : parseInt(startUrl.match(/\d+/)[0]);
+    let defPage = (startUrl.match(/\d+/) === null || parseInt(startUrl.match(/\d+/)) === 0) ? 0 : parseInt(startUrl.match(/\d+/)[0]);
     let pageNum;
     let item;
     if (type == "Max Items") {
-        pageNum = (max < 12) ? Math.floor(max / 12) + 2 : Math.floor(max / 12) + 1;
+        pageNum = Math.floor(max / 12) + 1;
         item = (max >= 12) ? (max % 12) : max;
     } else {
         pageNum = max;
     };
-    for (let i = defPage; i < (defPage + pageNum); i++) {
+    for (let i = (defPage == 0)? 1 : defPage ; i < (defPage + pageNum); i++) {
         if (i == 23) {
             break;
         }
