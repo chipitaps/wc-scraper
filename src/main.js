@@ -8,16 +8,22 @@ const { startUrl, type, max } = input;
 if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
     console.log('Thats not a valid URL');
 } else {
-    let defPage = (startUrl.match(/\d+/) === null || parseInt(startUrl.match(/\d+/)) === 0) ? 0 : parseInt(startUrl.match(/\d+/)[0]);
+    let defPage = (startUrl.match(/\d+/) === null || parseInt(startUrl.match(/\d+/)) === 0) ? 1 : parseInt(startUrl.match(/\d+/)[0]);
     let pageNum;
     let item;
     if (type == "Max Items") {
-        pageNum = Math.floor(max / 12) + 1;
-        item = (max >= 12) ? (max % 12) : max;
+        if (max < 12) {
+            pageNum = 1
+            item = max - 1
+        } else {
+            pageNum = Math.ceil(max / 12);
+            item = (max - 1) % 12
+        }
     } else {
         pageNum = max;
     };
-    for (let i = (defPage == 0)? 1 : defPage ; i < (defPage + pageNum); i++) {
+    for (let i = defPage; i < (defPage + pageNum); i++) {
+        console.log(i)
         if (i == 23) {
             break;
         }
@@ -29,6 +35,7 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
         requestList,
         maxConcurrency: 1,
         maxRequestRetries: 3,
+        requestHandlerTimeoutSecs: 15,
         requestHandler: async ({ page, request }) => {
             await page.waitForLoadState('networkidle');
             const html = await page.content();
@@ -36,7 +43,7 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
             const object = [];
             $('div.post_item').each((i, element) => {
                 if (item != undefined) {
-                    if (parseInt(request.url.match(/\d+/)[0]) == (defPage + pageNum) - 1 && i == item) {
+                    if (parseInt(request.url.match(/\d+/)[0]) == (defPage + pageNum) - 1 && i == item + 1) {
                         crawler.stop();
                         return false;
                     }
