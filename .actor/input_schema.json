@@ -1,0 +1,28 @@
+{
+    "title": "Scrape data from a web page",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "startUrl": {
+            "title": "URL of the page",
+            "type": "string",
+            "description": "If you want to search from a specific URL of the page.",
+            "editor": "textfield",
+            "prefill": "https://www.websiteclosers.com/businesses-for-sale/page/1/"
+        },
+        "type": {
+            "title": "Search For",
+            "type": "string",
+            "enum": ["Max Items", "Max Pages"],
+            "description": "How do you want to do the search.",
+            "default": "Max Items"
+        },
+        "max": {
+            "title": "Max Items",
+            "type": "integer",
+            "description": "How many items do you want to search",
+            "editor": "number"
+        }
+    },
+    "required": ["type","max"]
+}

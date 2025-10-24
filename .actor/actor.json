@@ -1,0 +1,82 @@
+{
+	"actorSpecification": 1,
+	"name": "wc-scraper",
+	"title": "Scrape single page in JavaScript",
+	"description": "Scrape data from single page with provided URL.",
+	"version": "0.0",
+	"meta": {
+		"templateId": "js-start",
+		"model": "<FILL-IN-MODEL>"
+	},
+	"input": "./input_schema.json",
+	"dockerfile": "../Dockerfile",
+	"storages": {
+        "dataset": {
+            "actorSpecification": 1,
+            "title": "Zappos.com Dataset",
+            "description": "",
+            "views": {
+                "products": {
+                    "title": "Overview",
+                    "description": "It can take about one minute until the first results are available.",
+                    "transformation": {
+                        "fields": [
+                            "image",
+                            "title",
+							"desc",
+                            "rawprice",
+							"numprice",
+                            "rawprofit",
+							"numprofit",
+                            "available",
+                            "broker",
+                            "timestamp",
+                            "link"
+                        ]
+                    },
+                    "display": {
+                        "component": "table",
+                        "properties": {
+                            "image": {
+                                "label": "Product image",
+                                "format": "image"
+                            },
+                            "title": {
+                                "label": "Name",
+                                "format": "text"
+                            },
+							"desc": {
+								"label": "Description",
+								"format": "text"
+							},
+                            "rawprice": {
+                                "format": "text"
+                            },
+							"numprice": {
+								"format": "number"
+							},
+                            "rawprofit": {
+                                "format": "text"
+                            },
+							"numprofit": {
+								"format" : "number"
+							},
+                            "available": {
+                                "format": "boolean"
+                            },
+                            "broker": {
+                                "format": "text"
+                            },
+                            "timestamp": {
+                                "format": "text"
+                            },
+							"link": {
+								"format": "link"
+							}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
