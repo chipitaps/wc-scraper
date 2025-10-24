@@ -4,7 +4,7 @@ import * as cheerio from 'cheerio';
 await Actor.init();
 const input = await Actor.getInput();
 const object = [];
-const crawler = new PlaywrightCrawler
+
 let { startUrl } = input;
 if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
     console.log('Thats not a valid URL')
