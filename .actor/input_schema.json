@@ -27,7 +27,8 @@
             "title": "Details",
             "type": "boolean",
             "description": "Choose if you want to display full details",
-            "default": true
+            "default": true,
+            "editor": "checkbox"
         }
     },
     "required": ["type","max", "details"]
