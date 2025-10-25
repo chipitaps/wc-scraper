@@ -23,7 +23,6 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
         pageNum = max;
     };
     for (let i = defPage; i < (defPage + pageNum); i++) {
-        console.log(i)
         if (i == 23) {
             break;
         }
