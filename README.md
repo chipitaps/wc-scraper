@@ -51,7 +51,8 @@ To scrape provide an input like this:
 {
 	"startUrl": "https://www.websiteclosers.com/businesses-for-sale/page/1/",
 	"type" : "Max Items",
-	"max" : 2
+	"max" : 2,
+	"details" : false
 }
 ```
 The expected output:
