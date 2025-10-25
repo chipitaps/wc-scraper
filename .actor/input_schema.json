@@ -22,7 +22,13 @@
             "type": "integer",
             "description": "How many items do you want to search",
             "editor": "number"
+        },
+        "details": {
+            "title": "Details",
+            "type": "boolean",
+            "description": "Choose if you want to display full details",
+            "default": true
         }
     },
-    "required": ["type","max"]
+    "required": ["type","max", "details"]
 }
