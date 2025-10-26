@@ -1,6 +1,8 @@
 import { Actor } from 'apify';
-import { RequestList, PlaywrightCrawler } from 'crawlee'
+import { RequestList, PlaywrightCrawler, Dataset } from 'crawlee'
+import { writeFile, writeFileSync } from 'fs';
 import * as cheerio from 'cheerio';
+import { parse } from 'json2csv';
 await Actor.init();
 const input = await Actor.getInput();
 const urls = [];
@@ -84,7 +86,9 @@ if (startUrl.split('/')[2] != 'www.websiteclosers.com') {
                     object.push(infoObject);
             });
         }
-            await Actor.pushData(object);
+            await Dataset.pushData(object);
+            await Dataset.exportToCSV('OUTPUT')
+            await Dataset.exportToJSON('OUTPUT')
         },
 
         failedRequestHandler: async ({ request }) => {
