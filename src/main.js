@@ -1,8 +1,6 @@
 import { Actor } from 'apify';
 import { RequestList, PlaywrightCrawler, Dataset } from 'crawlee'
-import { writeFile, writeFileSync } from 'fs';
 import * as cheerio from 'cheerio';
-import { parse } from 'json2csv';
 await Actor.init();
 const input = await Actor.getInput();
 const urls = [];
