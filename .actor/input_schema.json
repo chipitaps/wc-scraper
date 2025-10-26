@@ -21,7 +21,8 @@
             "title": "Max Items",
             "type": "integer",
             "description": "How many items do you want to search",
-            "editor": "number"
+            "editor": "number",
+            "minimum": 0
         },
         "details": {
             "title": "Details",
