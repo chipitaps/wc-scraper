@@ -1,8 +1,8 @@
 {
 	"actorSpecification": 1,
 	"name": "wc-scraper",
-	"title": "Scrape single page in JavaScript",
-	"description": "Scrape data from single page with provided URL.",
+	"title": "WebsiteClosers scraper",
+	"description": "Scrape information from WebsiteClosers.",
 	"version": "0.0",
 	"meta": {
 		"templateId": "js-start",
@@ -13,7 +13,7 @@
 	"storages": {
         "dataset": {
             "actorSpecification": 1,
-            "title": "Zappos.com Dataset",
+            "title": "Dataset",
             "description": "",
             "views": {
                 "products": {
